@@ -44,7 +44,13 @@ logger.Log("Testing %d %d %d!", 1, 2, 3)
 ### Custom Logger
 
 ```go
-databaseLogger := logger.New("<DATABASE>")
+databaseFile, err := os.Create("database.txt")
+
+if err != nil {
+  panic(err)
+}
+
+databaseLogger := logger.New("<DATABASE>", databaseFile)
 
 databaseLogger.Info("Connecting...")
 // Output: [INFO] [2022-04-01T20:35:20.987] <DATABASE> Connecting...
