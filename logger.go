@@ -2,21 +2,22 @@ package logger
 
 import (
 	"fmt"
+	"io"
 	"os"
 	"time"
 
 	"github.com/fatih/color"
 )
 
-var critical = color.New(color.FgRed).PrintfFunc()
-var info = color.New(color.FgBlue).PrintfFunc()
-var success = color.New(color.FgGreen).PrintfFunc()
-var warning = color.New(color.FgYellow).PrintfFunc()
+var critical = color.New(color.FgRed).FprintfFunc()
+var info = color.New(color.FgBlue).FprintfFunc()
+var success = color.New(color.FgGreen).FprintfFunc()
+var warning = color.New(color.FgYellow).FprintfFunc()
 
-func logMessage(f func(format string, a ...interface{}), status, prefix string, format string, a ...interface{}) {
-	f("[%s] [%s] %s ", status, time.Now().Format("2006-01-02T15:04:05.000"), prefix)
-	f(format, a...)
-	f("\n")
+func logMessage(f func(w io.Writer, format string, a ...interface{}), status, prefix string, format string, a ...interface{}) {
+	f(os.Stdout, "[%s] [%s] %s ", status, time.Now().Format("2006-01-02T15:04:05.000"), prefix)
+	f(os.Stdout, format, a...)
+	f(os.Stdout, "\n")
 }
 
 func Fatal(format string, a ...interface{}) {
