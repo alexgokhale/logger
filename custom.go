@@ -30,12 +30,20 @@ func New(prefix string, file *os.File) *Logger {
 }
 
 func (l *Logger) logMessage(f func(w io.Writer, format string, a ...interface{}), status, prefix string, format string, a ...interface{}) {
+	prefixString := ""
+
+	if prefix != "" {
+		prefixString = prefix + " "
+	} else {
+		prefixString = ""
+	}
+
 	if l.color {
-		f(l.file, "[%s] [%s] %s ", status, time.Now().Format("2006-01-02T15:04:05.000"), prefix)
+		f(l.file, "[%s] [%s] %s", status, time.Now().Format("2006-01-02T15:04:05.000"), prefixString)
 		f(l.file, format, a...)
 		f(l.file, "\n")
 	} else {
-		fmt.Fprintf(l.file, "[%s] [%s] %s ", status, time.Now().Format("2006-01-02T15:04:05.000"), prefix)
+		fmt.Fprintf(l.file, "[%s] [%s] %s", status, time.Now().Format("2006-01-02T15:04:05.000"), prefixString)
 		fmt.Fprintf(l.file, format, a...)
 		fmt.Fprintf(l.file, "\n")
 	}
