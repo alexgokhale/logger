@@ -33,7 +33,7 @@ logger.Info("Connecting to database...")
 // Output: [INFO] [2022-04-01T20:35:20.987] Connecting to database...
 
 // Print a success message (coloured green)
-logger.Info("Connected successfully!")
+logger.Success("Connected successfully!")
 // Output: [INFO] [2022-04-01T20:35:20.987] Connected successfully!
 
 // Print a generic log message
