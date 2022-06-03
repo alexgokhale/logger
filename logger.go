@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"sync"
 	"time"
 
 	"github.com/fatih/color"
@@ -14,7 +15,12 @@ var info = color.New(color.FgBlue).FprintfFunc()
 var success = color.New(color.FgGreen).FprintfFunc()
 var warning = color.New(color.FgYellow).FprintfFunc()
 
+var mu sync.Mutex
+
 func logMessage(f func(w io.Writer, format string, a ...interface{}), status string, format string, a ...interface{}) {
+	mu.Lock()
+	defer mu.Unlock()
+
 	f(os.Stdout, "[%s] [%s] ", status, time.Now().Format("2006-01-02T15:04:05.000"))
 	f(os.Stdout, format, a...)
 	f(os.Stdout, "\n")
@@ -42,6 +48,9 @@ func Warning(format string, a ...interface{}) {
 }
 
 func Log(format string, a ...interface{}) {
+	mu.Lock()
+	defer mu.Unlock()
+
 	fmt.Printf("[%s]", time.Now().Format("2006-01-02T15:04:05.000"))
 	fmt.Printf(format, a...)
 	fmt.Printf("\n")

@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"sync"
 	"time"
 
 	"github.com/mattn/go-isatty"
@@ -13,6 +14,7 @@ type Logger struct {
 	prefix string
 	file   *os.File
 	color  bool
+	mu     sync.Mutex
 }
 
 func New(prefix string, file *os.File) *Logger {
@@ -37,6 +39,9 @@ func (l *Logger) logMessage(f func(w io.Writer, format string, a ...interface{})
 	} else {
 		prefixString = ""
 	}
+
+	l.mu.Lock()
+	defer l.mu.Unlock()
 
 	if l.color {
 		f(l.file, "[%s] [%s] %s", status, time.Now().Format("2006-01-02T15:04:05.000"), prefixString)
@@ -71,6 +76,9 @@ func (l *Logger) Warning(format string, a ...interface{}) {
 }
 
 func (l *Logger) Log(format string, a ...interface{}) {
+	l.mu.Lock()
+	defer l.mu.Unlock()
+
 	fmt.Fprintf(l.file, "[%s] %s", time.Now().Format("2006-01-02T15:04:05.000"), l.prefix)
 	fmt.Fprintf(l.file, format, a...)
 	fmt.Fprintf(l.file, "\n")
