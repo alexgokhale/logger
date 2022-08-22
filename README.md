@@ -5,7 +5,7 @@ A customisable logger for Go.
 ## Installation
 
 ```shell
-go get -u github.com/alexgokhale/logger
+go get -u go.xela.tech/logger
 ```
 
 ## Examples
