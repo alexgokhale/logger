@@ -1,4 +1,4 @@
-module github.com/alexgokhale/logger
+module go.xela.tech/logger
 
 go 1.17
 
