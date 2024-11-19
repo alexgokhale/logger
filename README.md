@@ -2,6 +2,9 @@
 
 A customisable logger for Go.
 
+> [!WARNING]
+> This package is unmaintained. It provides nothing that can't be found in other, more well established, logging packages. Personally I use either [log/slog](https://go.dev/blog/slog) or [zap](https://go.uber.org/zap).
+
 ## Installation
 
 ```shell
